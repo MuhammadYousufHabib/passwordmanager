@@ -1,42 +1,25 @@
-"use client"
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { fetchUserInfo } from '@/services/authService';
+// components/ProtectedRoute.js
+"use client";
 
-export default function ProtectedRoute({ children, requiredRole }) {
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+export default function ProtectedRoute({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [hasAccess, setHasAccess] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const checkAccess = async () => {
-      const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');  
 
-      if (!token) {
-        router.push('/login');
-        return;
-      }
-
-      try {
-        const userInfo = await fetchUserInfo(token);
-
-        if (requiredRole && userInfo.is_admin !== requiredRole) {
-          router.push('/login'); // Redirect to a no-access page or similar
-          return;
-        }
-
-        setHasAccess(true);
-      } catch (error) {
-        // Handle token validation or fetch errors
-        console.error('Error fetching user info:', error);
-        router.push('/login');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAccess();
-  }, [router, requiredRole]);
+    if (!token) {
+      router.push('/login');  
+    } else {
+      setIsAuthenticated(true);
+    }
+    
+    setLoading(false); 
+  }, [router]);
 
   if (loading) {
     return (
@@ -46,5 +29,5 @@ export default function ProtectedRoute({ children, requiredRole }) {
     );
   }
 
-  return hasAccess ? children : null;
+  return isAuthenticated ? children : null;
 }

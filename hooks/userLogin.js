@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loginUser, fetchUserInfo } from '@/services/authService';
+import { loginUser } from '@/services/authService';
 
 const useLogin = () => {
   const [username, setUsername] = useState('');
@@ -19,14 +19,8 @@ const useLogin = () => {
       console.log(access_token, "response from userlogin");
 
       localStorage.setItem('token', access_token);
-
-      const userInfo = await fetchUserInfo(access_token);
-
-      if (userInfo.is_admin) {
-        router.push('/admin');
-      } else {
-        router.push('/user');
-      }
+     router.push("/dashboard")
+    
     } catch (error) {
       setError(error.message);
     } finally {
