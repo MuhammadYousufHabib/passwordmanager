@@ -1,7 +1,6 @@
 const BASE_URL = 'http://localhost:8000/role/';
 
 const RoleService = {
-  // Fetch all roles (GET)
   async getAllRoles() {
     try {
       const response = await fetch(`${BASE_URL}`);

@@ -12,8 +12,15 @@ export const addUser = async (newUser) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newUser),
   });
+  // if(response.ok){
+  //   const response = await fetch(`${BASE_URL}/role`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(newUser.role),
+  //   });
+  // }
   if (!response.ok) throw new Error('Failed to add user');
-  return response.json();
+  return await response.json();
 };
 
 export const deleteUser = async (id) => {
