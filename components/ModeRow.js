@@ -1,4 +1,3 @@
-// src/components/ModeRow.js
 import React from 'react';
 
 const ModeRow = ({ mode, onDelete, onEdit }) => {
