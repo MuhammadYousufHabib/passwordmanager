@@ -25,6 +25,7 @@ export const useUsers = () => {
     try {
       const addedUser = await addUser(user);
       setUsers((prev) => [...prev, addedUser]);
+      return(addedUser)
     } catch (error) {
       setError(error.message);
     }

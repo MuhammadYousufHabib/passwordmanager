@@ -25,6 +25,7 @@ export const useRoles = () => {
     try {
       const createdRole = await RoleService.addRole(newRole);
       setRoles([...roles, createdRole]);
+      return createdRole
     } catch (err) {
       setError('Failed to add role');
     }

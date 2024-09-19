@@ -14,7 +14,6 @@ const RoleService = {
     }
   },
 
-  // Add a new role (POST)
   async addRole(newRole) {
     try {
       const response = await fetch(`${BASE_URL}`, {
@@ -28,6 +27,7 @@ const RoleService = {
         throw new Error('Failed to add role');
       }
       const data = await response.json();
+      console.log(data,"on add role")
       return data;
     } catch (error) {
       throw error;

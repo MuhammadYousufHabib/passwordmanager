@@ -12,9 +12,11 @@ const RoleTable = () => {
   if (loading) return <p>Loading roles...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const handleAddRole = (newRole) => {
-    addNewRole(newRole);
+  const handleAddRole =async (newRole) => {
+   const data= await addNewRole(newRole);
     setShowModal(false);
+    return data
+    ;
   };
 
   const handleEditRole = (role) => {

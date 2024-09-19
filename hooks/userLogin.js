@@ -11,18 +11,33 @@ const useLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+    
+    if (!username && !password) {
+      setError('Username is required and Password is required.');
+      return;
+    }
+    
+    if (!username) {
+      setError('Username is required.');
+      return;
+    }
+    if (!password) {
+      setError('Password is required.');
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const { access_token } = await loginUser(username, password);
-      console.log(access_token, "response from userlogin");
+      console.log(access_token, "response from userLogin");
 
       localStorage.setItem('token', access_token);
-     router.push("/dashboard")
-    
+      router.push("/dashboard");
     } catch (error) {
-      setError(error.message);
+      // Catch any other login errors
+      setError('Invalid credentials. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,3 @@
-// src/hooks/useModes.js
 import { useState, useEffect } from 'react';
 import ModeService from '@/services/ModeService';
 

@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 const UserModal = ({ isOpen, onClose, onAddUser }) => {
   const [newUser, setNewUser] = useState({ name: '', username: '', email: '', password: '', role: '' });
   const [roles, setRoles] = useState([]);
-
+const [user_id, setuser_id] = useState()
+const [role_id, setrole_id] = useState()
   // Fetch roles from the API when the modal is opened
   useEffect(() => {
     if (isOpen) {
@@ -20,21 +21,41 @@ const UserModal = ({ isOpen, onClose, onAddUser }) => {
       console.error('Error fetching roles:', error);
     }
   };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewUser({ ...newUser, [name]: value });
   
-    // Log the selected role ID when the role is selected
     if (name === "role") {
       console.log("Selected Role ID:", value);
+      setrole_id(Number(value))
     }  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response=await onAddUser(newUser);
-    console.log(response,"current user")
+    console.log(response.id,"current user id")
+    setuser_id(Number(response.id))
     setNewUser({ name: '', username: '', email: '', password: ''});
+    try {
+      const roleResponse = await fetch("http://localhost:8000/assign_role", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: response.id, role_id: role_id }), 
+      });
+  
+      if (!roleResponse.ok) {
+        throw new Error('Failed to assign role');
+      }
+  
+      const roleData = await roleResponse.json(); 
+      console.log(roleData, "Role assignment response");
+      
+      setNewUser({ name: '', username: '', email: '', password: '', role: '' });
+      
+    } catch (error) {
+      console.error('Error assigning role:', error);
+    }
     onClose();
   };
 
